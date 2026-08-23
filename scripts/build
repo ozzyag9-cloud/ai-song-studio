@@ -1,0 +1,41 @@
+#!/bin/bash
+# Build script for AI Song Studio
+
+set -e
+
+echo "🏗️  AI Song Studio - Build Script"
+echo "================================"
+
+if [ "$1" == "native" ] || [ "$1" == "" ]; then
+    echo ""
+    echo "Building Apple native..."
+    if [ -d "Apple" ]; then
+        cd Apple
+        xcodebuild build -scheme AISongStudio -destination 'generic/platform=iOS Simulator'
+        cd ..
+        echo "✓ Native build complete"
+    fi
+fi
+
+if [ "$1" == "web" ] || [ "$1" == "" ]; then
+    echo ""
+    echo "Building web frontend..."
+    if [ -d "Web/frontend" ]; then
+        cd Web/frontend
+        npm run build
+        cd ../..
+        echo "✓ Frontend build complete"
+    fi
+    
+    echo ""
+    echo "Building web backend..."
+    if [ -d "Web/backend" ]; then
+        cd Web/backend
+        npm run build
+        cd ../..
+        echo "✓ Backend build complete"
+    fi
+fi
+
+echo ""
+echo "✅ Build complete"

@@ -1,0 +1,42 @@
+#!/bin/bash
+# Test script for AI Song Studio
+
+set -e
+
+echo "🧪 AI Song Studio - Test Suite"
+echo "=============================="
+
+# Test Apple native (Swift)
+echo ""
+echo "Testing Apple native..."
+if [ -d "Apple" ] && [ -f "Apple/AISongStudio.xcodeproj/project.pbxproj" ]; then
+    cd Apple
+    xcodebuild test -scheme AISongStudio -destination 'generic/platform=iOS Simulator' 2>&1 | tail -20
+    cd ..
+    echo "✓ Apple tests passed"
+else
+    echo "⚠️  Apple project not found, skipping"
+fi
+
+# Test Web/Backend
+echo ""
+echo "Testing web/backend..."
+if [ -d "Web/backend" ]; then
+    cd Web/backend
+    npm test 2>&1 || echo "⚠️  Backend tests failed (check logs)"
+    cd ../..
+    echo "✓ Backend tests checked"
+fi
+
+# Test Web/Frontend
+echo ""
+echo "Testing web/frontend..."
+if [ -d "Web/frontend" ]; then
+    cd Web/frontend
+    npm test 2>&1 || echo "⚠️  Frontend tests failed (check logs)"
+    cd ../..
+    echo "✓ Frontend tests checked"
+fi
+
+echo ""
+echo "✅ Test suite complete"

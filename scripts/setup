@@ -1,0 +1,78 @@
+#!/bin/bash
+# Setup script for AI Song Studio development environment
+
+set -e
+
+echo "🎵 AI Song Studio - Development Setup"
+echo "======================================="
+
+# Check dependencies
+echo "✓ Checking dependencies..."
+
+if ! command -v git &> /dev/null; then
+    echo "✗ Git not found. Please install Git."
+    exit 1
+fi
+
+if ! command -v node &> /dev/null; then
+    echo "✗ Node.js not found. Please install Node.js 18+"
+    exit 1
+fi
+
+echo "✓ Git and Node.js found"
+
+# Setup environment
+echo ""
+echo "📝 Setting up environment variables..."
+
+if [ ! -f .env ]; then
+    cp .env.example .env
+    echo "✓ Created .env from template"
+    echo "⚠️  Please edit .env and add your provider credentials"
+else
+    echo "✓ .env already exists"
+fi
+
+# Install web dependencies
+echo ""
+echo "📦 Installing web dependencies..."
+
+if [ -d "Web/frontend" ]; then
+    cd Web/frontend
+    npm install
+    cd ../..
+    echo "✓ Frontend dependencies installed"
+fi
+
+if [ -d "Web/backend" ]; then
+    cd Web/backend
+    npm install
+    cd ../..
+    echo "✓ Backend dependencies installed"
+fi
+
+# Setup Git hooks (optional)
+echo ""
+echo "🔨 Setting up Git hooks..."
+
+if [ ! -d .git/hooks ]; then
+    mkdir -p .git/hooks
+fi
+
+echo "✓ Git hooks directory ready"
+
+# Print next steps
+echo ""
+echo "✅ Setup complete!"
+echo ""
+echo "Next steps:"
+echo "  1. Edit .env and add your provider credentials"
+echo "  2. For Apple native: open Apple/AISongStudio.xcodeproj in Xcode"
+echo "  3. For web: cd Web/frontend && npm run dev"
+echo "  4. For backend: cd Web/backend && npm run dev"
+echo ""
+echo "Documentation:"
+echo "  - Architecture: docs/architecture.md"
+echo "  - Security: docs/security.md"
+echo "  - Deployment: docs/deployment.md"
+echo ""
