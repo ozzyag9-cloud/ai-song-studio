@@ -1,0 +1,26 @@
+name: Grant contents write for runtime
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/grant-contents-write.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify write permission (dry-run)
+        run: |
+          echo "GITHUB_TOKEN has contents: write"
+          # To actually test writing (optional), uncomment and run the curl command below.
+          # WARNING: do not paste any tokens into public chat.
+          # curl -X PUT -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github+json" \
+          #   https://api.github.com/repos/ozzyag9-cloud/ai-song-studio/contents/test-permissions.txt \
+          #   -d '{"message":"test write","content":"dGVzdCBmaWxlCg=="}'
